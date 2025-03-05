@@ -85,6 +85,15 @@ body {
     color: var(--light);
 }
 
+.btn-danger {
+    background: var(--danger);
+    color: var(--light);
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
 .btn-secondary:hover {
     background: #5a6268;
 }
