@@ -1,11 +1,16 @@
+<!-- <?php require_once '/app/config/mysql.php'; ?> -->
+ <!-- on la pas besoin pour l'instant -->
+
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/assets/styles/main.css">
 </head>
+
 <body>
     <?php require_once '/app/public/layout/_header.php'; ?>
     <main>
@@ -20,4 +25,5 @@
         </form>
     </main>
 </body>
+
 </html>
