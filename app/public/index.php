@@ -1,5 +1,9 @@
-<!-- <?php require_once '/app/config/mysql.php'; ?> -->
- <!-- on la pas besoin pour l'instant -->
+<?php 
+
+session_start();
+
+// var_dump($_SESSION['user']);
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
