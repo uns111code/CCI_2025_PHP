@@ -6,19 +6,12 @@
 
     // var_dump($_SESSION['user']);
     // si clé user vide ou non définie -> pas connecté
-    if (
-        empty($_SESSION['user']) 
-        || !in_array('ROLE_ADMIN', $_SESSION['user']['roles'])) 
-    {
-        // on définit un message d'erreur
-        $_SESSION['messages']['danger'] = "Vous n'avez pas le droit d'accéder à cette page.";
-
-        // on redirige l'utilisateur vers la page de login
-        header('Location: /login.php');
-        exit(302);
-    }
-
+    require_once '/app/Utils/utils.php';
+    
+    checkAdmin();
+    
     require_once '/app/Requests/users.php';
+    
 
  ?>
 <!DOCTYPE html>
@@ -56,7 +49,7 @@
                                 <td><?= $user['roles']; ?></td>
                                 <td>
                                     <div class="table-btn">
-                                        <a href="#" class="btn btn-secondary">Modifier</a>
+                                        <a href="/admin/users/update.php?id=<?= $user['id']; ?>" class="btn btn-secondary">Modifier</a>
                                         <a href="#" class="btn btn-danger">Supprimer</a>
                                     </div>
                                 </td>
