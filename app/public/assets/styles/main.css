@@ -8,6 +8,7 @@
     --light: #f8f9fa;
     --dark: #343a40;
     --border-radius: 8px;
+    --border-color: #a1a8af;
 }
 
 /************************************** RESET **************************************/
@@ -182,4 +183,34 @@ textarea {
     padding: 0.5rem;
     border: 1px solid var(--secondary);
     border-radius: var(--border-radius);
+}
+
+
+/************************************* table ********************************/
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+thead {
+    border-bottom: 1px solid var(--border-color);
+}
+
+th,
+td {
+    padding: 1rem;
+}
+
+
+.table-btn {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.table-btn .btn {
+    width: max-content;
 }

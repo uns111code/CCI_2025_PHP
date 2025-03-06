@@ -1,7 +1,7 @@
-<?php foreach ($_SESSION['messages'] ?? [] as $type => $messages): ?>
+<?php foreach ($_SESSION['messages'] ?? [] as $type => $message): ?>
     <div class="alert alert-<?= $type; ?>">
         <?php
-           echo $messages; 
+           echo $message; 
            unset($_SESSION['messages'][$type]);  // Suppression du message après affichage
         ?>
     </div>
