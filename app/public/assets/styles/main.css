@@ -97,6 +97,14 @@ body {
 .btn-secondary:hover {
     background: #5a6268;
 }
+.btn-light {
+    background: var(--light);
+    color: var(--dark);
+}
+
+.btn-light:hover {
+    background: #e2e6ea;
+}
 
 /************************************** ALERT **************************************/
 .alert {

@@ -68,8 +68,9 @@ if (
         <link rel="stylesheet" href="/assets/styles/main.css">
     </head>
     <body>
-        <?php require_once '/app/public/Layout/_header.php'; ?>
+        <?php require_once '/app/public/layout/_header.php'; ?>
         <main>
+             <?php require_once '/app/public/layout/_messages.php'; ?>
             <section class="container mt-4">
                 <h1 class="title text-center">Se connecter</h1>
                 <form action="/login.php" class="card mt-4 mx-auto w-50" method="post">

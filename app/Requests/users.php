@@ -38,5 +38,36 @@ function findOneUserByEmail(string $email): bool|array
     return $sql->fetch();
 }
 
+/**
+ * Créeation d'un utilisateur dans la base de données.
+ *
+ * @param string $firstName  prénom de l'utilisateur
+ * @param string $lastName
+ * @param string $email
+ * @param string $password
+ * @return bool Returns true si l'utilisateur a été créé, false sinon.
+ */
+function createUser(string $firstName, string $lastName, string $email, string $password): bool 
+{
+    // INSERT INTO users (first_name, last_name, email, password) VALUES (:first_name, :last_name, :email, :password)
+    global $db; 
+
+    try {
+        $query = "INSERT INTO users (first_name, last_name, email, password) VALUES (:first_name, :last_name, :email, :password)";
+
+        $sql = $db->prepare($query);
+        $sql->execute([
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_ARGON2I),
+        ]);
+    } catch (PDOException $e) {
+        return false;
+    }
+    
+    return true;
+}
+
 
 // 1; DELETE FROM users; -- Supprime tous les utilisateurs de la base de données

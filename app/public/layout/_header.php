@@ -3,7 +3,7 @@
         <a href="/" class="navbar-logo">My first App PHP</a>
         <ul class="navbar-links">
             <li class="navbar-item">
-                <a href="/index.php">Accueil</a>
+                <a href="#">Accueil</a>
             </li>
             <li class="navbar-item">
                 <a href="#">Profil</a>
@@ -13,13 +13,18 @@
             </li>
         </ul>
         <ul class="navbar-buttons">
-            <li class="navbar-item">
-                <?php if (!empty($_SESSION['user'])) :?>
-                    <a href="/logout.php" class="btn btn-danger">logout</a>
-                <?php else :?>
-                    <a href="/login.php" class="btn btn-secondary">login</a>
-                <?php endif;?>
-            </li>
+            <?php if (!empty($_SESSION['user'])): ?>
+                <li class="navbar-item">
+                    <a href="/logout.php" class="btn btn-danger">Logout</a>
+                </li>
+            <?php else: ?>
+                <li class="navbar-item">
+                    <a href="/login.php" class="btn btn-secondary">Login</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="/register.php" class="btn btn-light">Register</a>
+                </li>
+            <?php endif; ?>
         </ul>
     </nav>
 </header>

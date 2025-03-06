@@ -18,6 +18,7 @@ session_start();
 <body>
     <?php require_once '/app/public/layout/_header.php'; ?>
     <main>
+        <?php require_once '/app/public/layout/_messages.php'; ?>
         <form action="/contact.php" method="POST">
             <label for="name">Votre Nom</label>
             <input type="text" id="name" name="name">
@@ -29,5 +30,4 @@ session_start();
         </form>
     </main>
 </body>
-
 </html>
