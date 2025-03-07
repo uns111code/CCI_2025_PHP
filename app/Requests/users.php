@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once '/app/config/mysql.php';
 
@@ -8,7 +8,7 @@ require_once '/app/config/mysql.php';
  *
  * @return array
  */
-function findAllUsers(): array 
+function findAllUsers(): array
 {
     global $db;
 
@@ -26,7 +26,7 @@ function findAllUsers(): array
  *  @return bool|array
  */
 
-function findOneUserById(int $id): bool|array 
+function findOneUserById(int $id): bool|array
 {
     global $db;
 
@@ -48,7 +48,7 @@ function findOneUserById(int $id): bool|array
  *  @return 
  */
 
-function findOneUserByEmail(string $email): bool|array 
+function findOneUserByEmail(string $email): bool|array
 {
     global $db;
 
@@ -69,10 +69,10 @@ function findOneUserByEmail(string $email): bool|array
  * @param string $password
  * @return bool Returns true si l'utilisateur a été créé, false sinon.
  */
-function createUser(string $firstName, string $lastName, string $email, string $password): bool 
+function createUser(string $firstName, string $lastName, string $email, string $password): bool
 {
     // INSERT INTO users (first_name, last_name, email, password) VALUES (:first_name, :last_name, :email, :password)
-    global $db; 
+    global $db;
 
     try {
         $query = "INSERT INTO users (first_name, last_name, email, password) VALUES (:first_name, :last_name, :email, :password)";
@@ -87,7 +87,7 @@ function createUser(string $firstName, string $lastName, string $email, string $
     } catch (PDOException $e) {
         return false;
     }
-    
+
     return true;
 }
 
@@ -119,11 +119,11 @@ function updateUser(int $id, string $firstName, string $lastName, string $email,
         $query .= ", password = :password";
         $params['password'] = password_hash($password, PASSWORD_ARGON2I);
     }
-    $query.= " WHERE id = :id";
+    $query .= " WHERE id = :id";
     $params['id'] = $id;
 
     // var_dump($query, $params);
-    
+
     try {
         $sql = $db->prepare($query);
         $sql->execute($params);
@@ -131,7 +131,7 @@ function updateUser(int $id, string $firstName, string $lastName, string $email,
         // var_dump($e->getMessage());
         return false;
     }
-    
+
     return true;
 }
 
@@ -148,6 +148,46 @@ function deleteUser(int $id): bool
         $sql = $db->prepare($query);
         $sql->execute([
             'id' => $id,
+        ]);
+    } catch (PDOException $e) {
+        return false;
+    }
+
+    return true;
+}
+
+
+
+
+
+function findOneArticleByTitle(string $title): bool|array
+{
+    global $db;
+
+    $sql = $db->prepare("SELECT * FROM articles WHERE title = :title");
+    $sql->execute([
+        'title' => $title
+    ]);
+
+    return $sql->fetch();
+}
+
+
+
+
+
+function createArticle(string $title, string $description): bool
+{
+    // INSERT INTO article (title, description)
+    global $db;
+
+    try {
+        $query = "INSERT INTO articles (title, description) VALUES (:title, :description)";
+
+        $sql = $db->prepare($query);
+        $sql->execute([
+            'title' => $title,
+            'description' => $description
         ]);
     } catch (PDOException $e) {
         return false;
