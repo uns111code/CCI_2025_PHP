@@ -6,28 +6,32 @@ require_once '/app/Utils/utils.php';
 
 checkAdmin();
 
+// var_dump($_SERVER);    // pour voir tout les info de server
 
-require_once '/app/Requests/users.php';
+// var_dump($_POST);   // pour voir les données de formulaires
+
+require_once '/app/Requests/article.php';
 // Vérifier si les données du formulaire sont bien présentes
 if (
     !empty($_POST['title'])
     && !empty($_POST['description'])
 ) {
+    // Nettoyage de données (suppression des balises HTML) -> faille xss
     $title = strip_tags($_POST['title']);
     $description = strip_tags($_POST['description']);
+    $enabled = isset($_POST['enabled']) ? true : false;    // ou 1 : 0
 
+    // Vérification des Contraintes SQL
     $articleExist = findOneArticleByTitle($title);
 
-    // Insérer l'article en BDD (sql)
-
-
     if (!$articleExist) {
+        // Persistance de données  (مقاومت ایستادگی) 
         // On peut créer l'article en BDD
-        if (createArticle($title, $description)) {
+        if (createArticle($title, $description, $enabled)) {
             // Définir un message de success
             $_SESSION['messages']['success'] = "Votre article a bien été créé";
 
-            // Redirection vers la page de connexion
+            // Redirection vers la page de souhaitée
             header('Location: /admin/article/create.php');
             exit(302);
         } else {
@@ -36,13 +40,11 @@ if (
     } else {
         $errorMessage = "Ce titre est déjà utilisé";
     }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $errorMessage = "Les champs obligatoires ne sont pas remplis";
 }
 
 
-
-var_dump(
-    $_POST
-);
 
 ?>
 
@@ -62,7 +64,7 @@ var_dump(
         <?php require_once '/app/public/layout/_messages.php'; ?>
         <section class="container mt-4">
             <h1 class="title text-center">Création d'article</h1>
-            <form action="#" method="POST" class="card mt-4">
+            <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="POST" class="card mt-4">
                 <?php if (isset($errorMessage)): ?>
                     <div class="alert alert-danger">
                         <?= $errorMessage; ?>
@@ -73,8 +75,12 @@ var_dump(
                     <input type="text" name="title" id="title" required placeholder="Title">
                 </div>
                 <div class="form-group">
-                    <label for="Description">Description</label>
-                    <textarea name="description" id="description" required placeholder="Description"></textarea>
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" required placeholder="Description" rows="10"></textarea>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" name="enabled" id="enabled">
+                    <label for="enabled">Actif</label>
                 </div>
                 <button type="submit" class="btn btn-primary">Créer</button>
             </form>
