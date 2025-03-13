@@ -143,6 +143,41 @@ function deleteArticle(string $title): bool
 
 
 
+
+
+
+
+
+
+
+// /**
+//  * Suppression d'un article en BDD
+//  * 
+//  * @param int $id
+//  * 
+//  * @return bool
+//  */
+// function deleteArticle(int $id): bool
+// {
+//     global $db;
+
+//     try {
+//         $sql = $db->prepare("DELETE FROM articles WHERE id = :id");
+//         $sql->execute([
+//             'id' => $id
+//         ]);
+//     } catch (PDOException $e) {
+//         return false;
+//     }
+
+//     return true;
+// }
+
+
+
+
+
+
 //  /**
 //  *  Récupère un article en BDD en filtrant par son id
 //  * 

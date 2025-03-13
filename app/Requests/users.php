@@ -84,7 +84,7 @@ function createUser(string $firstName, string $lastName, string $email, string $
             'email' => $email,
             'password' => password_hash($password, PASSWORD_ARGON2I),
         ]);
-    } catch (PDOException $e) {
+    } catch (PDOException $e) {  // erreur de connexion à la BDD
         return false;
     }
 

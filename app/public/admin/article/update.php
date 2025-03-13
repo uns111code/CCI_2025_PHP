@@ -5,9 +5,9 @@ session_start();
 require_once '/app/Utils/utils.php';
 
 checkAdmin();
-// Récupérer le article grace à title dans l'url (GET)
-require_once '/app/Requests/article.php';
 
+require_once '/app/Requests/article.php';
+// Récupérer le article grace à title dans l'url (GET)
 $article = (isset($_GET['title']) && trim($_GET['title']) !== '') ? findOneArticleByTitle($_GET['title']) : null;
 // $article = preg_match('/^[0-9]+$/', $_POST['id'] ?? '') ? findOneArticleById($_POST['id']) : null;
 

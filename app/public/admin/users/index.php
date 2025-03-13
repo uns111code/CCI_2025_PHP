@@ -30,6 +30,7 @@
         <?php require_once '/app/public/Layout/_messages.php'; ?>
         <section class="container mt-4">
             <h1 class="text-center">Administration des users</h1>
+            <a href="/admin/article/" class="btn btn-primary">Article</a>
             <table class="card mt-4">
                 <thead>
                     <tr>

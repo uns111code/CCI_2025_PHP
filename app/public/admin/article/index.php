@@ -7,6 +7,10 @@ require_once '/app/Utils/utils.php';
 checkAdmin();
 
 require_once '/app/Requests/article.php';
+
+$_SESSION['csrf_token'] = bin2hex(random_bytes(72));
+
+var_dump($_SESSION)
 ?>
 
 
@@ -26,7 +30,8 @@ require_once '/app/Requests/article.php';
         <?php require_once '/app/public/Layout/_messages.php'; ?>
         <section class="container mt-4">
             <h1 class="text-center">Création des Articles</h1>
-            <a href="/admin/articles/create.php" class="btn btn-primary">Créer un Article</a>
+            <a href="/admin/article/create.php" class="btn btn-primary">Créer un Article</a>
+            <a href="/admin/category" class="btn btn-primary">Catégorie</a>
             <table class="card mt-4">
                 <thead>
                     <tr>
@@ -53,6 +58,7 @@ require_once '/app/Requests/article.php';
                                         <a href="/admin/article/update.php?title=<?= $article['title']; ?>" class="btn btn-secondary">Modifier</a>
                                         <form action="/admin/article/delete.php" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet Article ?');">
                                             <input type="hidden" name="title" value="<?= $article['title'];?>">
+                                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ;?>">
                                             <button type="submit" class="btn btn-danger">Supprimer</button>
                                         </form>
                                     </div>
