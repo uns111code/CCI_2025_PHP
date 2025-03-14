@@ -5,7 +5,9 @@ session_start();
 require_once '/app/Utils/utils.php';
 checkAdmin();
 
-require_once '/app/Requests/category.php'
+require_once '/app/Requests/category.php';
+
+$_SESSION['csrf_token'] = bin2hex(random_bytes(72));
 ?>
 
 <!DOCTYPE html>
@@ -20,6 +22,7 @@ require_once '/app/Requests/category.php'
     <?php require_once '/app/public/Layout/_header.php'; ?>
     <main>
         <section class="container mt-4">
+        <?php require_once '/app/public/layout/_messages.php'; ?>
             <h1 class="text-center">Catégorie</h1>
             <a href="/admin/category/create.php" class="btn btn-primary">Créer une catégorie</a>
             <table class="card mt-4">
@@ -42,7 +45,11 @@ require_once '/app/Requests/category.php'
                         <td>
                             <div class="table-btn">
                                 <a href="/admin/category/update.php?id=<?= $category['id']; ?>" class="btn btn-secondary">Modifier</a>
-                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                                <form action="/admin/category/delete.php" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet catégorie ?');">
+                                    <input type="hidden" name="id" value="<?= $category['id'];?>">
+                                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ;?>">
+                                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                                </form>
                             </div>
                         </td>
                     </tr>

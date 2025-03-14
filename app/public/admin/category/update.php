@@ -4,6 +4,7 @@ session_start();
 
 require_once '/app/Utils/utils.php';
 checkAdmin();
+
 require_once '/app/Requests/category.php';
 
 $category = preg_match('/^[0-9]+$/', $_GET['id'] ?? '') ? findOneCategoryById($_GET['id']) : null;
@@ -17,7 +18,7 @@ if (!$category) {
 };
 
 if (
-    !empty($_POST['name'])
+    !empty(trim($_POST['name'] ?? ''))  // trim efface les space vide
 ) {
     $name = strip_tags($_POST['name']);
     $enabled = isset($_POST['enabled']) ? 1 : 0;
@@ -52,6 +53,7 @@ if (
     <?php require_once '/app/public/Layout/_header.php'; ?>
     <main>
         <section class="container mt-4">
+        <?php require_once '/app/public/layout/_messages.php'; ?>
             <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="POST" class="card mt-4">
                 <?php if (isset($errorMessage)): ?>
                     <div class="alert alert-danger">

@@ -11,8 +11,8 @@ require_once '/app/Requests/category.php';
 // var_dump($_POST);  // pour voir res valeur de inputes
 
 if (
-    !empty($_POST['name'])
-    // !empty(trim($_POST['name'] ?? ''  et pas de space
+    !empty(trim($_POST['name'] ?? ''))  // !empty(trim($_POST['name'] ?? ''  et pas de space
+    
 ) {
 
     $name = strip_tags($_POST['name']);
@@ -23,7 +23,7 @@ if (
     if (!$categoryExist) {
         if (createCategory($name, $enabled)) {
             $_SESSION['messages']['success'] = "Votre Catégorie a bien été créé";
-            header('Location: /admin/category/');
+            header('Location: /admin/category/index.php');
             exit(302);
         } else {
             $errorMessage = "Une erreur est survenue lors de la création de votre catégory";

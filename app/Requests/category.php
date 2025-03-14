@@ -75,3 +75,22 @@ function updateCategory (int $id, string $name, int $enabled) : bool
     }
     return true;
 }
+
+
+
+function deleteCategory(int $id) : bool
+{
+    global $db;
+
+    $query = "DELETE FROM category WHERE id = :id";
+
+    $sql = $db->prepare($query);
+    try {
+        $sql->execute([
+            'id' => $id
+        ]);
+    } catch (PDOException $e) {
+        return false;
+    }
+    return true;
+}
