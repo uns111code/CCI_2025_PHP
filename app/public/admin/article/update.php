@@ -7,6 +7,9 @@ require_once '/app/Utils/utils.php';
 checkAdmin();
 
 require_once '/app/Requests/article.php';
+
+require_once '/app/Requests/category.php';
+
 // Récupérer le article grace à title dans l'url (GET)
 $article = (isset($_GET['title']) && trim($_GET['title']) !== '') ? findOneArticleByTitle($_GET['title']) : null;
 // $article = preg_match('/^[0-9]+$/', $_POST['id'] ?? '') ? findOneArticleById($_POST['id']) : null;
@@ -30,13 +33,14 @@ if (
     $title = strip_tags($_POST['title']);
     $description = strip_tags($_POST['description']);
     $enabled = isset($_POST['enabled']) ? 1 : 0;
+    $categoryId = preg_match('/^[0-9]+$/', $_POST['category'] ?? '') ? $_POST['category'] : null;
 
     // Vérification des contraintes SQL
     $changeTitle = $title !== $article['title'];  // s'il a changé son title
 
     if (!$changeTitle || !findOneArticleByTitle($title)) {
         // Si il n'a pas changé son title, on peut modifier l'artile
-        if (updateArticle($article['id'], $title, $description, $enabled)) {
+        if (updateArticle($article['id'], $title, $description, $enabled, $categoryId)) {
             // articlee modifié sans erreur
             // on définit un message de succès
             $_SESSION['messages']['success'] = "article modifié avec succès";
@@ -78,6 +82,17 @@ if (
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" name="title" id="title" required placeholder="title" value="<?= $article['title']; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="category">Catégorie</label>
+                    <select name="category" id="category">
+                        <option value="">Sélectionner une catégorie</option>
+                        <?php foreach(findAllCategory() as $category): ?>
+                            <option value="<?= $category['id']; ?>" <?= $article['category_id'] === $category['id'] ? 'selected' : ''; ?>>
+                                <?= $category['name']; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>

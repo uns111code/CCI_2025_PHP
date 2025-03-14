@@ -16,7 +16,13 @@
             <?php if (!empty($_SESSION['user'])): ?>
                 <?php if (in_array('ROLE_ADMIN', $_SESSION['user']['roles'])): ?>
                     <li class="navbar-item">
-                        <a href="/admin/users" class="btn btn-light">Admin</a>
+                        <a href="/admin/users" class="btn btn-light">Admin Users</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a href="/admin/category" class="btn btn-light">Admin Catégories</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a href="/admin/article" class="btn btn-light">Admin Articles</a>
                     </li>
                 <?php endif; ?>
                 <li class="navbar-item">

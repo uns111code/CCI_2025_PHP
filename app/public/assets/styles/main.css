@@ -178,12 +178,16 @@ body {
 }
 
 input,
-textarea {
+textarea,
+select {
     width: 100%;
     padding: 0.5rem;
     border: 1px solid var(--secondary);
     border-radius: var(--border-radius);
 }
+/* select:nth-child(1) {
+    color: #6c757d;
+} */
 
 /* label {
     display: flex;

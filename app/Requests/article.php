@@ -25,18 +25,19 @@ function findOneArticleByTitle(string $title): bool|array  // bool si il ne trou
 
 
 
-function createArticle(string $title, string $description, int $enabled): bool
+function createArticle(string $title, string $description, int $enabled, ?int $categoryId): bool
 {
 
     global $db;
-    $query = "INSERT INTO articles (title, description, enabled) VALUES (:title, :description, :enabled)";
+    $query = "INSERT INTO articles (title, description, enabled, category_id) VALUES (:title, :description, :enabled, :category_id)";
 
     try {
         $sql = $db->prepare($query);
         $sql->execute([
             'title' => $title,
             'description' => $description,
-            'enabled' => $enabled
+            'enabled' => $enabled,
+            'category_id' => $categoryId
         ]);
     } catch (PDOException $e) {
         return false;
@@ -57,7 +58,7 @@ function findAllArticles(): array
 {
     global $db;
 
-    $query = "SELECT * FROM articles";
+    $query = "SELECT * FROM articles ORDER BY created_at DESC";
 
     $sql = $db->query($query);
 
@@ -65,7 +66,16 @@ function findAllArticles(): array
 }
 
 
+function findAllArticlesWithCategory(): array
+{
+    global $db;
 
+    $query = "SELECT a.*, c.name AS category_name FROM articles a LEFT JOIN category c ON a.category_id = c.id ORDER BY a.created_at DESC";
+
+    $sql = $db->query($query);
+
+    return $sql->fetchAll();
+};
 
 
 
@@ -81,11 +91,11 @@ function findAllArticles(): array
  */
 
 
-function updateArticle(int $id, string $title, string $description, int $enabled): bool
+function updateArticle(int $id, string $title, string $description, int $enabled, int $categoryId): bool
 {
 
     global $db;
-    $query = "UPDATE articles SET title = :title, description = :description, enabled = :enabled WHERE id = :id";
+    $query = "UPDATE articles SET title = :title, description = :description, enabled = :enabled , category_id = :category_id WHERE id = :id";
     $sql = $db->prepare($query);
 
     try {
@@ -95,6 +105,7 @@ function updateArticle(int $id, string $title, string $description, int $enabled
             'description' => $description,
             'enabled' => $enabled,
             'id' => $id,
+            'category_id' => $categoryId
         ]);
     } catch (PDOException $e) {
         var_dump($e->getMessage());
@@ -106,17 +117,17 @@ function updateArticle(int $id, string $title, string $description, int $enabled
 
 // 1; DELETE FROM articles; -- Supprime tous les articles de la base de données
 
-function deleteArticle(string $title): bool
+function deleteArticle(int $id): bool
 {
 
     // DELETE FROM articles WHERE id = 1;
     global $db;
-    $query = "DELETE FROM articles WHERE title = :title";
+    $query = "DELETE FROM articles WHERE id = :id";
 
     try {
         $sql = $db->prepare($query);
         $sql->execute([
-            'title' => $title,
+            'id' => $id,
         ]);
     } catch (PDOException $e) {
         return false;
@@ -185,17 +196,17 @@ function deleteArticle(string $title): bool
 //  *  @return bool|array
 //  */
 
-//  function findOneArticleById(int $id): bool|array
-//  {
-//      global $db;
- 
-//      $query = "SELECT * FROM articles WHERE id = :id";
- 
- 
-//      $sql = $db->prepare($query);
-//      $sql->execute([
-//          'id' => $id
-//      ]);
- 
-//      return $sql->fetch();
-//  };
+function findOneArticleById(int $id): bool|array
+{
+    global $db;
+
+    $query = "SELECT * FROM articles WHERE id = :id";
+
+
+    $sql = $db->prepare($query);
+    $sql->execute([
+        'id' => $id
+    ]);
+
+    return $sql->fetch();
+};

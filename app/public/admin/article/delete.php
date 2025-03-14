@@ -11,19 +11,19 @@ require_once '/app/Requests/article.php';
 
 
 if (
-    preg_match('/^[a-zA-Z0-9]+$/', $_POST['title'] ?? '')
+    preg_match('/^[0-9]+$/', $_POST['id'] ?? '')
     && !empty($_POST['csrf_token'])
 ) {
 
     // Vérifier le token CSRF
     if ($_POST['csrf_token'] === $_SESSION['csrf_token']) {
         // Chercher l'article en BDD via l'id
-        $article = findOneArticleByTitle($_POST['title']);
+        $article = findOneArticleById($_POST['id']);
 
         // On vérifie que l'article existe
         if ($article) {
             // On supprime l'article en vérifiant que la requête SQL s'est bien passée
-            if (deleteArticle($article['title'])) {
+            if (deleteArticle($article['id'])) {
                 $_SESSION['messages']['success'] = "Article supprimé avec succès";
             } else {
                 $_SESSION['messages']['danger'] = "Erreur lors de la suppression de l'article";

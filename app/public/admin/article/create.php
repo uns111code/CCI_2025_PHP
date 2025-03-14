@@ -11,6 +11,9 @@ checkAdmin();
 // var_dump($_POST);   // pour voir les données de formulaires
 
 require_once '/app/Requests/article.php';
+
+require_once '/app/Requests/category.php';
+
 // Vérifier si les données du formulaire sont bien présentes
 if (
     !empty($_POST['title'])
@@ -20,6 +23,7 @@ if (
     $title = strip_tags($_POST['title']);
     $description = strip_tags($_POST['description']);
     $enabled = isset($_POST['enabled']) ? true : false;    // ou 1 : 0
+    $categoryId = preg_match('/^[0-9]+$/', $_POST['category'] ?? '') ? $_POST['category'] : null;
 
     // Vérification des Contraintes SQL
     $articleExist = findOneArticleByTitle($title);
@@ -27,7 +31,7 @@ if (
     if (!$articleExist) {
         // Persistance de données  (مقاومت ایستادگی) 
         // On peut créer l'article en BDD
-        if (createArticle($title, $description, $enabled)) {
+        if (createArticle($title, $description, $enabled, $categoryId)) {
             // Définir un message de success
             $_SESSION['messages']['success'] = "Votre article a bien été créé";
 
@@ -73,6 +77,17 @@ if (
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" name="title" id="title" required placeholder="Title">
+                </div>
+                <div class="form-group">
+                    <label for="category">Catégorie</label>
+                    <select name="category" id="category">
+                        <option value="" selected disabled>Sélectionner une catégorie</option>
+                        <?php foreach(findAllCategory() as $category): ?>
+                            <option value="<?= $category['id']; ?>">
+                                <?= $category['name']; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
