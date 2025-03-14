@@ -47,7 +47,10 @@ $_SESSION['csrf_token'] = bin2hex(random_bytes(72));
                     <?php foreach(findAllArticlesWithCategory() as $article): ?>
                             <tr>
                                 <td><?= "$article[title]"; ?></td>
-                                <td><?= $article['description']; ?></td>
+                                <td>
+                                    <?= substr($article['description'], offset: 0, length: 150);
+                                    echo strlen($article['description']) > 150 ? "..." : ''; ?>
+                                </td>
                                 <!-- <td><?php var_dump($article); ?></td> -->
                                 <td><?= $article['category_name'] ?? 'Pas de catégorie' ?></td>
                                 <td><?= (new DateTime($article['created_at']))->format('d-m-Y'); ?></td>

@@ -161,6 +161,12 @@ body {
 }
 
 /************************************** CARD **************************************/
+.card-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
 .card {
     border-radius: var(--border-radius);
     border: var(--dark);

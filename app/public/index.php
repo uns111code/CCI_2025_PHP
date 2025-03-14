@@ -3,6 +3,8 @@
 session_start();
 
 // var_dump($_SESSION['user']);
+
+require_once'/app/Requests/article.php';
 ?>
 
 <!DOCTYPE html>
@@ -19,15 +21,22 @@ session_start();
     <?php require_once '/app/public/layout/_header.php'; ?>
     <main>
         <?php require_once '/app/public/layout/_messages.php'; ?>
-        <form action="/contact.php" method="POST">
-            <label for="name">Votre Nom</label>
-            <input type="text" id="name" name="name">
-            <label for="email">Votre Email</label>
-            <input type="email" id="email" name="email">
-            <label for="message">Votre Message</label>
-            <textarea id="message" name="message"></textarea>
-            <button type="submit">Envoyer</button>
-        </form>
+        <section class="container mt-4">
+            <h1 class="text-center">Welcome sur le blog PHP</h1>
+            <div class="mt-4 card-list">
+                <?php foreach (findAllArticlesWithCategory() as $article): ?>
+                    <div class="card">
+                        <h2 class="card-title"><?= $article['title']; ?></h2>
+                        <p class="card-text mt-4"><?= substr($article['description'], offset: 0, length: 150);
+                        echo strlen($article['description']) > 150 ? "..." : ''; ?></p>
+                        <em class="card-date">
+                            <?= (new DateTime($article['created_at']))->format('d/m/Y'); ?>
+                        </em>
+                        <a href="/details-article.php?id=<?= $article['id']; ?>" class="btn btn-primary mt-4">En savoir plus</a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
     </main>
 </body>
 </html>

@@ -134,8 +134,46 @@ function deleteArticle(int $id): bool
     }
 
     return true;
-}
+};
 
+
+ /**
+ *  Récupère un article en BDD en filtrant par son id
+ * 
+ * @param int $id Id de l'article à rechercher
+ *  @return bool|array
+ */
+
+ function findOneArticleById(int $id): bool|array
+ {
+     global $db;
+ 
+     $query = "SELECT * FROM articles WHERE id = :id";
+ 
+ 
+     $sql = $db->prepare($query);
+     $sql->execute([
+         'id' => $id
+     ]);
+ 
+     return $sql->fetch();
+ };
+
+
+
+
+function findLatestArticle(int $limit = 3): array
+{
+    global $db;
+
+    $query = "SELECT a.*, c.name AS categorie_name FROM article a LEFT JOIN category c ON a.categorie_id = c.id ORDER BY a.created_at DESC LIMIT :limit";
+    $sql = $db->query($query);
+    $sql->execute([
+        'limit' => $limit
+    ]);
+
+    return $sql->fetchAll();
+};
 
 
 
@@ -184,29 +222,3 @@ function deleteArticle(int $id): bool
 //     return true;
 // }
 
-
-
-
-
-
-//  /**
-//  *  Récupère un article en BDD en filtrant par son id
-//  * 
-//  * @param int $id Id de l'article à rechercher
-//  *  @return bool|array
-//  */
-
-function findOneArticleById(int $id): bool|array
-{
-    global $db;
-
-    $query = "SELECT * FROM articles WHERE id = :id";
-
-
-    $sql = $db->prepare($query);
-    $sql->execute([
-        'id' => $id
-    ]);
-
-    return $sql->fetch();
-};

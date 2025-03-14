@@ -18,7 +18,7 @@ if (
     // Vérifier le token CSRF
     if ($_POST['csrf_token'] === $_SESSION['csrf_token']) {
         // Chercher l'article en BDD via l'id
-        $article = findOneArticleById($_POST['id']);
+        $article = findLatestArticle($_POST['id']);
 
         // On vérifie que l'article existe
         if ($article) {
